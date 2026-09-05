@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f4f1ea;
+  --bg-elev: #fffdf8;
+  --ink: #1c1915;
+  --muted: #6b6459;
+  --line: #d9d1c3;
+  --accent: #0d9488;
+  --accent-2: #b45309;
+  --grid: rgba(28, 25, 21, 0.06);
+}
+
+.dark {
+  --bg: #12100d;
+  --bg-elev: #1b1814;
+  --ink: #f3eee4;
+  --muted: #b0a89b;
+  --line: #3a342c;
+  --accent: #2dd4bf;
+  --accent-2: #f5b56a;
+  --grid: rgba(243, 238, 228, 0.05);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --font-sans: var(--font-geist);
+  --font-serif: var(--font-newsreader);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  min-height: 100vh;
+}
+
+.display {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.55s ease both;
+}
+
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.progress-track {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.progress-track::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 25%;
+  background: var(--accent);
+  animation: sweep 1.1s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.skeleton {
+  background: var(--line);
+  border-radius: 3px;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.content-fade-in {
+  animation: rise 0.35s ease both;
+}
