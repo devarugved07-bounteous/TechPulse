@@ -1,3 +1,6 @@
+import http from "node:http";
+import https from "node:https";
+import { URL } from "node:url";
 import { normalizeArticleUrl, stripHtml } from "@/lib/utils";
 
 export type ParsedFeedItem = {
@@ -20,21 +23,94 @@ export type ParsedFeed = {
 
 /**
  * Local Windows/corporate networks often MITM HTTPS or lack a CA that Node trusts.
- * Production (Vercel) keeps strict TLS. Opt out of the local bypass with TECHPULSE_STRICT_SSL=1.
+ * Use a request-scoped Agent instead of NODE_TLS_REJECT_UNAUTHORIZED (which warns loudly).
+ * Production keeps strict TLS. Opt out of the local bypass with TECHPULSE_STRICT_SSL=1.
  */
-function relaxTlsForLocalDev() {
-  if (process.env.NODE_ENV === "production") return;
-  if (process.env.TECHPULSE_STRICT_SSL === "1") return;
-  if (process.env.NODE_TLS_REJECT_UNAUTHORIZED === "0") return;
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+const insecureHttpsAgent = new https.Agent({ rejectUnauthorized: false });
+
+function shouldRelaxTls() {
+  return process.env.NODE_ENV !== "production" && process.env.TECHPULSE_STRICT_SSL !== "1";
+}
+
+type FeedHttpResult = {
+  status: number;
+  headers: Headers;
+  text: string;
+};
+
+async function requestFeed(
+  url: string,
+  headers: Record<string, string>,
+  signal: AbortSignal,
+): Promise<FeedHttpResult> {
+  if (!shouldRelaxTls()) {
+    const response = await fetch(url, {
+      headers,
+      cache: "no-store",
+      signal,
+    });
+    return {
+      status: response.status,
+      headers: response.headers,
+      text: await response.text(),
+    };
+  }
+
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const lib = parsed.protocol === "http:" ? http : https;
+    const req = lib.request(
+      {
+        protocol: parsed.protocol,
+        hostname: parsed.hostname,
+        port: parsed.port || undefined,
+        path: `${parsed.pathname}${parsed.search}`,
+        method: "GET",
+        headers,
+        agent: parsed.protocol === "https:" ? insecureHttpsAgent : undefined,
+        timeout: 12_000,
+      },
+      (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const headerBag = new Headers();
+          for (const [key, value] of Object.entries(res.headers)) {
+            if (value == null) continue;
+            headerBag.set(key, Array.isArray(value) ? value.join(", ") : value);
+          }
+          resolve({
+            status: res.statusCode ?? 0,
+            headers: headerBag,
+            text: Buffer.concat(chunks).toString("utf8"),
+          });
+        });
+      },
+    );
+
+    const onAbort = () => {
+      req.destroy();
+      reject(signal.reason instanceof Error ? signal.reason : new Error(`Feed aborted for ${url}`));
+    };
+    if (signal.aborted) {
+      onAbort();
+      return;
+    }
+    signal.addEventListener("abort", onAbort, { once: true });
+
+    req.on("timeout", () => {
+      req.destroy();
+      reject(new Error(`Feed timeout for ${url}`));
+    });
+    req.on("error", reject);
+    req.end();
+  });
 }
 
 export async function fetchFeed(
   url: string,
   opts: { etag?: string | null; lastModified?: string | null },
 ): Promise<ParsedFeed> {
-  relaxTlsForLocalDev();
-
   const headers: Record<string, string> = {
     "User-Agent":
       "Mozilla/5.0 (compatible; TechPulse/0.1; +https://techpulse.local; RSS aggregator)",
@@ -46,12 +122,7 @@ export async function fetchFeed(
   let lastError: unknown;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
-      const response = await fetch(url, {
-        headers,
-        // Avoid Next Data Cache storing empty/error-adjacent responses for long.
-        cache: "no-store",
-        signal: AbortSignal.timeout(12_000),
-      });
+      const response = await requestFeed(url, headers, AbortSignal.timeout(12_000));
       if (response.status === 304) {
         return {
           notModified: true,
@@ -60,16 +131,15 @@ export async function fetchFeed(
           lastModified: opts.lastModified ?? undefined,
         };
       }
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error(`Feed HTTP ${response.status} for ${url}`);
       }
 
-      const xml = await response.text();
       return {
         notModified: false,
         etag: response.headers.get("etag") ?? undefined,
         lastModified: response.headers.get("last-modified") ?? undefined,
-        items: parseFeedXml(xml),
+        items: parseFeedXml(response.text),
       };
     } catch (error) {
       lastError = error;

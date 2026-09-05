@@ -7,9 +7,9 @@ export default function Loading() {
       <PageHeadingSkeleton />
       <ul className="mt-8 divide-y divide-line">
         {Array.from({ length: 12 }).map((_, index) => (
-          <li key={index} className="flex items-baseline justify-between gap-4 py-3">
+          <li key={index} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
             <SkeletonLine className="h-6 w-40" />
-            <SkeletonLine className="h-3 w-48" />
+            <SkeletonLine className="h-3 w-48 max-w-full" />
           </li>
         ))}
       </ul>

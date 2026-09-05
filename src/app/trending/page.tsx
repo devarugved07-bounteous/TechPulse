@@ -9,7 +9,7 @@ export const metadata = { title: "Trending" };
 export default function TrendingPage() {
   return (
     <div>
-      <h1 className="display text-4xl">Trending</h1>
+      <h1 className="display text-3xl sm:text-4xl">Trending</h1>
       <p className="mt-2 text-muted">72-hour mention frequency, source diversity, recency, and authority.</p>
       <div className="mt-8 grid gap-8 md:grid-cols-2">
         <Suspense fallback={<PanelSkeleton rows={8} />}>
@@ -100,12 +100,12 @@ function TrendColumn({
         {items.length ? (
           items.map((item) => (
             <li key={item.href} className="flex justify-between gap-3">
-              <Link href={item.href} className="hover:text-accent">
+              <Link href={item.href} className="min-w-0 truncate hover:text-accent">
                 <span className="mr-2 font-mono text-xs text-muted">{item.rank}</span>
                 {item.name}
               </Link>
               {item.delta ? (
-                <span className="text-xs text-muted">
+                <span className="shrink-0 text-xs text-muted">
                   {item.delta > 0 ? `↑${item.delta}` : `↓${Math.abs(item.delta)}`}
                 </span>
               ) : null}

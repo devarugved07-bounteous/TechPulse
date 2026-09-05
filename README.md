@@ -21,8 +21,8 @@ feeds directly and caches successful responses for 15 minutes. Technology, categ
 vendor, and event catalogs are versioned in `src/data/catalog.ts`.
 
 On some local Windows networks Node cannot verify RSS HTTPS certificates
-(`UNABLE_TO_GET_ISSUER_CERT_LOCALLY`). Local `dev` relaxes TLS for feed fetching
-only; production on Vercel stays strict.
+(`UNABLE_TO_GET_ISSUER_CERT_LOCALLY`). Local `dev` uses a request-scoped TLS
+bypass for feed fetching only; production on Vercel stays strict.
 
 ## Deploy (free)
 

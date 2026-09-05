@@ -11,12 +11,12 @@ export function HotTechRail({
       <ol className="mt-4 space-y-3">
         {items.map((item) => (
           <li key={item.slug} className="flex items-baseline justify-between gap-3">
-            <Link href={`/technology/${item.slug}`} className="hover:text-accent">
+            <Link href={`/technology/${item.slug}`} className="min-w-0 truncate hover:text-accent">
               <span className="mr-2 font-mono text-xs text-muted">{item.rank || "–"}</span>
               {item.name}
             </Link>
             {item.delta ? (
-              <span className={item.delta > 0 ? "text-xs text-accent" : "text-xs text-accent-2"}>
+              <span className={`shrink-0 text-xs ${item.delta > 0 ? "text-accent" : "text-accent-2"}`}>
                 {item.delta > 0 ? `↑${item.delta}` : `↓${Math.abs(item.delta)}`}
               </span>
             ) : null}

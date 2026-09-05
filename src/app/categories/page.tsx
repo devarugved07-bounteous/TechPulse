@@ -9,7 +9,7 @@ export const metadata = { title: "Categories" };
 export default function CategoriesPage() {
   return (
     <div>
-      <h1 className="display text-4xl">Categories</h1>
+      <h1 className="display text-3xl sm:text-4xl">Categories</h1>
       <p className="mt-2 text-muted">Coverage across the technology landscape — not only AI.</p>
       <Suspense
         fallback={
@@ -34,8 +34,8 @@ async function CategoryGrid() {
           href={`/categories/${category.slug}`}
           className="border border-line bg-elev p-4 hover:border-accent"
         >
-          <h2 className="display text-2xl">{category.name}</h2>
-          <p className="mt-2 text-sm text-muted">{category.description}</p>
+          <h2 className="display text-xl sm:text-2xl">{category.name}</h2>
+          <p className="mt-2 line-clamp-3 text-sm text-muted">{category.description}</p>
         </Link>
       ))}
     </div>

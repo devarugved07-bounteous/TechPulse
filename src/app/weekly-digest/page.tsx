@@ -32,7 +32,7 @@ async function DigestContent() {
   if (!digest) {
     return (
       <div>
-        <h1 className="display text-4xl">This Week in Technology</h1>
+        <h1 className="display text-3xl sm:text-4xl">This Week in Technology</h1>
         <p className="mt-3 text-muted">No digest yet. Open the site after feeds load to build one from live articles.</p>
       </div>
     );

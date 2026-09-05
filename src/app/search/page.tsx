@@ -13,7 +13,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   return (
     <div>
-      <h1 className="display text-4xl">Search</h1>
+      <h1 className="display text-3xl sm:text-4xl">Search</h1>
       <p className="mt-2 text-muted">Articles, technologies, companies, categories, and events.</p>
       <div className="mt-6">
         <SearchForm q={q} />
@@ -89,15 +89,15 @@ function ResultGroup({
           items.map((item) => (
             <li key={item.href}>
               {item.external ? (
-                <a href={item.href} target="_blank" rel="noreferrer" className="hover:text-accent">
+                <a href={item.href} target="_blank" rel="noreferrer" className="break-words hover:text-accent">
                   {item.label}
                 </a>
               ) : (
-                <Link href={item.href} className="hover:text-accent">
+                <Link href={item.href} className="break-words hover:text-accent">
                   {item.label}
                 </Link>
               )}
-              {item.meta ? <div className="mt-0.5 text-xs text-muted">{item.meta}</div> : null}
+              {item.meta ? <div className="mt-0.5 break-words text-xs text-muted">{item.meta}</div> : null}
             </li>
           ))
         ) : (

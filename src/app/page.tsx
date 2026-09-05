@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div>
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">Technology intelligence</p>
-      <h1 className="display mt-2 text-4xl md:text-5xl">The stack, vendors, and events — in one desk.</h1>
+      <h1 className="display mt-2 text-3xl sm:text-4xl md:text-5xl">The stack, vendors, and events — in one desk.</h1>
       <p className="mt-3 max-w-2xl text-muted">
         AI is one category. Browse Kubernetes, cloud, security, research, and conferences without opening twenty tabs.
       </p>
@@ -104,7 +104,7 @@ async function HomeCompanyUpdates() {
       <ul className="mt-4 space-y-3 text-sm">
         {data.companyUpdates.map((article) => (
           <li key={article.id}>
-            <a href={article.url} target="_blank" rel="noreferrer" className="hover:text-accent">
+            <a href={article.url} target="_blank" rel="noreferrer" className="break-words hover:text-accent">
               {article.title}
             </a>
             <div className="text-xs text-muted">{article.source.name}</div>

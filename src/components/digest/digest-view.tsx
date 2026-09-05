@@ -41,7 +41,7 @@ type Digest = {
 export function DigestView({ digest }: { digest: Digest }) {
   return (
     <div>
-      <h1 className="display text-4xl">This Week in Technology</h1>
+      <h1 className="display text-3xl sm:text-4xl">This Week in Technology</h1>
       <p className="mt-2 text-muted">Rule-based picks from the week’s aggregated coverage.</p>
       <div className="mt-10 space-y-10">
         {order.map((section) => {
@@ -52,8 +52,8 @@ export function DigestView({ digest }: { digest: Digest }) {
               <h2 className="text-[11px] uppercase tracking-[0.2em] text-accent">{labels[section]}</h2>
               <ol className="mt-3 divide-y divide-line">
                 {items.map((item) => (
-                  <li key={item.article.id} className="py-3">
-                    <a href={item.article.url} className="display text-xl hover:text-accent">
+                  <li key={item.article.id} className="min-w-0 py-3">
+                    <a href={item.article.url} className="display break-words text-lg hover:text-accent sm:text-xl">
                       {item.article.title}
                     </a>
                     <div className="text-xs text-muted">

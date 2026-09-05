@@ -9,7 +9,7 @@ export const metadata = { title: "Companies" };
 export default function CompaniesPage() {
   return (
     <div>
-      <h1 className="display text-4xl">Vendors</h1>
+      <h1 className="display text-3xl sm:text-4xl">Vendors</h1>
       <p className="mt-2 text-muted">Profiles for cloud, data, and infrastructure companies.</p>
       <Suspense
         fallback={
@@ -34,8 +34,8 @@ async function CompanyGrid() {
           href={`/companies/${company.slug}`}
           className="border border-line bg-elev p-4 hover:border-accent"
         >
-          <h2 className="display text-2xl">{company.name}</h2>
-          <p className="mt-2 text-sm text-muted">{company.description}</p>
+          <h2 className="display text-xl sm:text-2xl">{company.name}</h2>
+          <p className="mt-2 line-clamp-3 text-sm text-muted">{company.description}</p>
         </Link>
       ))}
     </div>

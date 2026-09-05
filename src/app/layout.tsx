@@ -16,11 +16,11 @@ export const dynamic = "force-dynamic";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${sans.variable} ${newsreader.variable} antialiased`}>
+      <body className={`${sans.variable} ${newsreader.variable} overflow-x-clip antialiased`}>
         <ThemeProvider>
           <AppProviders>
             <Header />
-            <main className="mx-auto max-w-6xl px-4 py-8">
+            <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
               <Suspense fallback={<DefaultPageSkeleton />}>{children}</Suspense>
             </main>
             <Footer />

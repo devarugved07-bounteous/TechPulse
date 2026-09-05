@@ -47,7 +47,7 @@ async function CompanyContent({ slug }: { slug: string }) {
   return (
     <div className="content-fade-in">
       <p className="text-[11px] uppercase tracking-[0.2em] text-accent">Vendor</p>
-      <h1 className="display text-4xl">{company.name}</h1>
+      <h1 className="display break-words text-3xl sm:text-4xl">{company.name}</h1>
       <p className="mt-3 max-w-2xl text-muted">{company.description}</p>
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         <section className="lg:col-span-2">

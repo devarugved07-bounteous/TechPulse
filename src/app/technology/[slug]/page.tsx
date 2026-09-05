@@ -49,7 +49,7 @@ async function TechnologyContent({ slug }: { slug: string }) {
     <div className="content-fade-in grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2">
         <p className="text-[11px] uppercase tracking-[0.2em] text-accent">Technology</p>
-        <h1 className="display text-4xl">{technology.name}</h1>
+        <h1 className="display break-words text-3xl sm:text-4xl">{technology.name}</h1>
         <p className="mt-3 text-muted">{technology.description}</p>
         <div className="mt-8">
           <ArticleList articles={articles} />

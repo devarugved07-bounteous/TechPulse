@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/application/dashboard/queries";
 import { ArticleList } from "@/components/articles/article-list";
@@ -35,7 +34,7 @@ async function CategoryContent({ slug }: { slug: string }) {
 
   return (
     <div className="content-fade-in">
-      <h1 className="display text-4xl">{category.name}</h1>
+      <h1 className="display break-words text-3xl sm:text-4xl">{category.name}</h1>
       <p className="mt-2 text-muted">{category.description}</p>
       <div className="mt-8">
         <ArticleList articles={articles} />

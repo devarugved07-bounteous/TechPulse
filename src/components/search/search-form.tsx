@@ -9,7 +9,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md bg-ink px-4 py-2 text-sm text-bg disabled:opacity-60"
+      className="w-full shrink-0 rounded-md bg-ink px-4 py-2 text-sm text-bg disabled:opacity-60 sm:w-auto"
     >
       {pending ? "Searching…" : "Search"}
     </button>
@@ -21,7 +21,7 @@ export function SearchForm({ q }: { q: string }) {
   return (
     <form
       action="/search"
-      className="flex gap-2"
+      className="flex flex-col gap-2 sm:flex-row"
       onSubmit={() => {
         startLoading();
       }}
@@ -30,7 +30,7 @@ export function SearchForm({ q }: { q: string }) {
         name="q"
         defaultValue={q}
         placeholder="Search Kubernetes, Azure, Build…"
-        className="w-full rounded-md border border-line bg-elev px-3 py-2 text-sm outline-none ring-accent focus:ring-2"
+        className="min-w-0 w-full rounded-md border border-line bg-elev px-3 py-2 text-sm outline-none ring-accent focus:ring-2"
       />
       <SubmitButton />
     </form>

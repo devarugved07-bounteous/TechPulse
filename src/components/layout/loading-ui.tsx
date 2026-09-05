@@ -56,9 +56,9 @@ export function CardGridSkeleton({ cards = 6 }: { cards?: number }) {
 
 export function BreakingSkeleton() {
   return (
-    <div className="mb-8 flex flex-wrap items-baseline gap-3 border border-line bg-elev px-4 py-3">
+    <div className="mb-8 flex flex-col gap-2 border border-line bg-elev px-4 py-3 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-3">
       <SkeletonLine className="h-3 w-16" />
-      <SkeletonLine className="h-6 w-2/3" />
+      <SkeletonLine className="h-6 w-full sm:w-2/3" />
     </div>
   );
 }
