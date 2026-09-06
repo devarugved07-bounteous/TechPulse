@@ -5,12 +5,14 @@ import { Header, Footer } from "@/components/layout/header";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { AppProviders } from "@/components/layout/app-providers";
 import { DefaultPageSkeleton } from "@/components/layout/loading-ui";
-import { defaultMetadata } from "@/lib/seo";
+import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
+import { defaultMetadata, defaultViewport } from "@/lib/seo";
 
 const sans = Source_Sans_3({ subsets: ["latin"], variable: "--font-geist" });
 const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader" });
 
 export const metadata = defaultMetadata();
+export const viewport = defaultViewport();
 export const dynamic = "force-dynamic";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -24,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Suspense fallback={<DefaultPageSkeleton />}>{children}</Suspense>
             </main>
             <Footer />
+            <ServiceWorkerRegister />
           </AppProviders>
         </ThemeProvider>
       </body>

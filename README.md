@@ -24,6 +24,16 @@ On some local Windows networks Node cannot verify RSS HTTPS certificates
 (`UNABLE_TO_GET_ISSUER_CERT_LOCALLY`). Local `dev` uses a request-scoped TLS
 bypass for feed fetching only; production on Vercel stays strict.
 
+## PWA
+
+TechPulse is installable as a Progressive Web App:
+
+- Web manifest at `/manifest.webmanifest`
+- App icons under `public/icons/`
+- Service worker (`public/sw.js`) registered in production for offline shell support
+
+After deploying to HTTPS (Vercel), open the site on your phone and use **Add to Home Screen** / **Install app**.
+
 ## Deploy (free)
 
 - Vercel Hobby is the only service required.
